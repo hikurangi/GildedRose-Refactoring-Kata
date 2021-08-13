@@ -1,46 +1,46 @@
-using Xunit;
 using System.Collections.Generic;
+using Xunit;
 
 namespace csharpcore
 {
-    public class SulfurasTests
+    public class AgedBrieTests
     {
-        [Fact]
-        public void WhenADayPasses_QualityStaysAtEighty()
-        {
-            var item = new Item
-            {
-                Name = "Sulfuras, Hand of Ragnaros",
-                SellIn = 10,
-                Quality = 80
-            };
-            var items = new List<Item> {item};
-            var app = new GildedRose(items);
-
-            app.UpdateQuality();
-            
-            Assert.Equal(80, item.Quality); 
-        }
-
         [Theory]
         [InlineData(int.MaxValue)]
-        [InlineData(10)]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void WhenADayPasses_SellInDoesNotChange(int sellIn)
+        [InlineData(1)]
+        public void WhenNotDueToBeSold_AndADayPasses_QualityIncreasesByOne(int sellIn)
         {
             var item = new Item
             {
-                Name = "Sulfuras, Hand of Ragnaros",
+                Name = "Aged Brie",
                 SellIn = sellIn,
-                Quality = 80
+                Quality = 6
             };
             var items = new List<Item> {item};
             var app = new GildedRose(items);
 
             app.UpdateQuality();
             
-            Assert.Equal(sellIn, item.SellIn); 
+            Assert.Equal(7, item.Quality); 
+        }
+        
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-2)]
+        public void WhenNotDueToBeSold_AndADayPasses_QualityIncreasesByTwo(int sellIn)
+        {
+            var item = new Item
+            {
+                Name = "Aged Brie",
+                SellIn = sellIn,
+                Quality = 6
+            };
+            var items = new List<Item> {item};
+            var app = new GildedRose(items);
+
+            app.UpdateQuality();
+            
+            Assert.Equal(8, item.Quality); 
         }
     }
 }
