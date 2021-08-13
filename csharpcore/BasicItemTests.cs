@@ -8,7 +8,12 @@ namespace csharpcore
         [Fact]
         public void WhenQualityIsZero_AndADayPasses_TheQualityIsZero()
         {
-            var item = new Item {Name = "foo", SellIn = 10, Quality = 0};
+            var item = new Item
+            {
+                Name = "Basic Item",
+                SellIn = 10,
+                Quality = 0
+            };
             var items = new List<Item> {item};
             var app = new GildedRose(items);
 
@@ -16,15 +21,20 @@ namespace csharpcore
 
             Assert.Equal(0, item.Quality);
         }
-        
+
         [Theory]
-        [InlineData(1, 0)]
         [InlineData(int.MaxValue, int.MaxValue - 1)]
+        [InlineData(1, 0)]
         [InlineData(0, -1)]
-        [InlineData(int.MinValue + 1, int.MinValue)]
+        [InlineData(-9, -10)]
         public void WhenADayPasses_TheSellInValueIsDecremented(int initial, int expected)
         {
-            var item = new Item {Name = "foo", SellIn = initial, Quality = 5};
+            var item = new Item
+            {
+                Name = "Basic Item",
+                SellIn = initial,
+                Quality = 5
+            };
             var items = new List<Item> {item};
             var app = new GildedRose(items);
 
@@ -32,13 +42,18 @@ namespace csharpcore
 
             Assert.Equal(expected, item.SellIn);
         }
-        
+
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
         public void WhenTheSellInHasPassed_TheQualityDecreasesByTwo(int sellIn)
         {
-            var item = new Item {Name = "foo", SellIn = sellIn, Quality = 10};
+            var item = new Item
+            {
+                Name = "Basic Item",
+                SellIn = sellIn,
+                Quality = 10
+            };
             var items = new List<Item> {item};
             var app = new GildedRose(items);
 
@@ -48,9 +63,14 @@ namespace csharpcore
         }
 
         [Fact]
-        public void WhenSellInIsNegative_AndQualityIsOne_ThenQualityIsZero()
+        public void WhenSellInIsNegative_AndQualityIsOne_ThenQualityBecomesZero()
         {
-            var item = new Item {Name = "foo", SellIn = -3, Quality = 1};
+            var item = new Item
+            {
+                Name = "foo",
+                SellIn = -3,
+                Quality = 1
+            };
             var items = new List<Item> {item};
             var app = new GildedRose(items);
 
