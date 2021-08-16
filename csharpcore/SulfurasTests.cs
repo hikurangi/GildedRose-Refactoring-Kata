@@ -1,46 +1,33 @@
-using Xunit;
 using System.Collections.Generic;
+using FsCheck;
+using FsCheck.Xunit;
 
 namespace csharpcore
 {
     public class SulfurasTests
     {
-        [Fact]
-        public void WhenADayPasses_QualityStaysAtEighty()
-        {
-            var item = new Item
-            {
-                Name = "Sulfuras, Hand of Ragnaros",
-                SellIn = 10,
-                Quality = 80
-            };
-            var items = new List<Item> {item};
-            var app = new GildedRose(items);
+        [Property]
+        public Property WhenADayPasses_QualityStaysAtEighty(int sellIn) =>
+            (WhenADayPasses(sellIn).Quality == 80).ToProperty();
 
-            app.UpdateQuality();
-            
-            Assert.Equal(80, item.Quality); 
-        }
+        [Property]
+        public Property WhenADayPasses_SellInDoesNotChange(int sellIn) =>
+            (WhenADayPasses(sellIn).SellIn == sellIn).ToProperty();
 
-        [Theory]
-        [InlineData(int.MaxValue)]
-        [InlineData(10)]
-        [InlineData(0)]
-        [InlineData(-1)]
-        public void WhenADayPasses_SellInDoesNotChange(int sellIn)
+        private Item WhenADayPasses(int sellIn = 5, int quality = 80)
         {
             var item = new Item
             {
                 Name = "Sulfuras, Hand of Ragnaros",
                 SellIn = sellIn,
-                Quality = 80
+                Quality = quality
             };
             var items = new List<Item> {item};
             var app = new GildedRose(items);
 
             app.UpdateQuality();
-            
-            Assert.Equal(sellIn, item.SellIn); 
+
+            return item;
         }
     }
 }
